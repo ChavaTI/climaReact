@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from './component/Header';
 import Formulario from './component/Formulario';
 import Error from './component/Error';
+import Clima from './component/Clima';
 
 
 function App() {
@@ -12,7 +13,6 @@ function App() {
   const [resultado,guardarResultado] = useState({});
 
   useEffect(()=>{
-
     const consultarAPI = async () => {
       const apiId = '728eba52479046fbf109684136b58307';
       const url= `https://api.openweathermap.org/data/2.5/weather?q=${ciudad},${pais}&appid=${apiId}`; 
@@ -38,8 +38,10 @@ function App() {
   let componente;
   if(error){
     componente = <Error mensaje = 'Ambos campos son obligatorios'/>
+  }else if(resultado.cod === "404"){
+    componente = <Error mensaje = 'Ciudad o país no encontrados'/>
   }else {
-    componente = null;
+    componente = <Clima resultado = {resultado}/>;
   }
 
   return (
